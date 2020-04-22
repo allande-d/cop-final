@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     EditText password;
     Button ChangeScreen;
     Button login;
+    Button register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,5 +30,32 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newEntry = username.getText().toString();
+                if(username.length() != 0 ){
+                    AddData(newEntry);
+                    username.setText("");
+                } else{
+                    toastMessage("You must put something in the text field!");
+                }
+
+            }
+        });
     }
+
+    public void AddData(String newEntry){
+        boolean insertData = mDatabaseHelper.addData(newEntry);
+        if (insertData){
+            toastMessage("Data entered");
+        } else{
+            toastMessage("Something went wrong");
+        }
+    }
+    private void toastMessage(String message){
+        Toast.makeText(this,message, Toast.LENGTH_LONG).show();
+    }
+
+
 }
