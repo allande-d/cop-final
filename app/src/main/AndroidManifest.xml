@@ -12,6 +12,8 @@
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login"></activity>
+        <activity android:name="com.example.tutorialspoint7.finalproject.RegisterPage" />
+        <activity android:name="com.example.tutorialspoint7.finalproject.ui.login.LogIn" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

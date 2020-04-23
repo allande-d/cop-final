@@ -4,46 +4,41 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    public static final String DATABASE_NAME = "Users.db";
+    public static final String TABLE_NAME = "accounts_table";
+    public static final String COL_2 = "NAME";
+    public static final String COL_3 = "EMAIL";
+    public static final String COL_4 = "PASSWORD";
 
-    private static final String TAG = "DatabaseHelper";
-        private static final String TABLE_NAME = "people_table";
-        private static final String COL1 = "ID";
-        private static final String COL2 = "name";
-
-
-
-    public DatabaseHelper(Context context){
-        super(context, TABLE_NAME, null, 1);
+    public DatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, 1);
     }
 
-
+    @Override
     public void onCreate(SQLiteDatabase db) {
-        String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " + COL2 + " TEXT)";
-        db.execSQL(createTable);
+        db.execSQL("create table " + TABLE_NAME +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME TEXT,EMAIL TEXT,PASSWORD TEXT)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP IF TABLE EXISTS " + TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
         onCreate(db);
     }
 
-    public boolean addData(String item){
+    public boolean insertData(String name,String username,String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL2, item);
-
-        Log.d(TAG, "addData: Adding " + item + " to " + TABLE_NAME);
-
-        long result = db.insert(TABLE_NAME, null, contentValues);
-
-        if (result == -1){
+        contentValues.put(COL_2,name);
+        contentValues.put(COL_3,username);
+        contentValues.put(COL_4,password);
+        long result = db.insert(TABLE_NAME,null ,contentValues);
+        if(result == -1)
             return false;
-        } else {
+        else
             return true;
-        }
     }
+
+
 }
