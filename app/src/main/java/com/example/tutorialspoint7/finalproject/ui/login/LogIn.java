@@ -2,12 +2,14 @@ package com.example.tutorialspoint7.finalproject.ui.login;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,7 +23,8 @@ public class LogIn extends AppCompatActivity {
     EditText username;
     EditText password;
     DatabaseHelper myDb;
-    String check_pass = "";
+    String check_pass;
+    String user_pass = "";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myDb = new DatabaseHelper(this);
@@ -30,7 +33,7 @@ public class LogIn extends AppCompatActivity {
         login = findViewById(R.id.login);
         signup = findViewById(R.id.signup);
         password = findViewById(R.id.password);
-        check_pass = password.getText().toString();
+
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -39,20 +42,20 @@ public class LogIn extends AppCompatActivity {
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-                Cursor res = myDb.getAllData("test@gmail.com");
 
-                StringBuffer buffer = new StringBuffer();
-                while (res.moveToNext()) {
-                    buffer.append("Id :"+ res.getString(0)+"\n");
-                    buffer.append("Name :"+ res.getString(1)+"\n");
-                    buffer.append("Surname :"+ res.getString(2)+"\n");
-                    buffer.append("Marks :"+ res.getString(3)+"\n\n");
+                user_pass = myDb.getAllData(username.getText().toString());
+                check_pass = password.getText().toString();
+                if(user_pass.equals(check_pass))
+                {
+                    showMessage("Attention","Password is correct");
                 }
-
-                // Show all data
-                showMessage("Data",buffer.toString());
+                else
+                {
+                    showMessage("Attention","Password is incorrect");
+                }
             }
         });
     }

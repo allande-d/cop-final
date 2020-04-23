@@ -5,6 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "Users.db";
@@ -40,12 +43,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         else
             return true;
     }
-    public Cursor getAllData(String email) {
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public String getAllData(String check_user) {
         SQLiteDatabase db = this.getWritableDatabase();
-        //Cursor res = db.rawQuery("select * from "+TABLE_NAME,null);
-        Cursor res = db.rawQuery("select * from "+ TABLE_NAME + " where "+ COL_2 + "=Allande" ,null);
+        Cursor res = db.rawQuery("select * from "+ TABLE_NAME + " WHERE " + COL_3+ " =?", new String[]{check_user});
+        //Cursor res = db.rawQuery("select * from "+ TABLE_NAME + " WHERE " + COL_3+ " =?", new String[]{check_user} ,null);
         res.moveToFirst();
-        return res;
+        return res.getString(3);
     }
 
 
