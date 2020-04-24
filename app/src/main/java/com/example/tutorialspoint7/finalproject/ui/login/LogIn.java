@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.tutorialspoint7.finalproject.DatabaseHelper;
 import com.example.tutorialspoint7.finalproject.R;
 import com.example.tutorialspoint7.finalproject.RegisterPage;
+import com.example.tutorialspoint7.finalproject.home;
 
 public class LogIn extends AppCompatActivity {
     Button login;
@@ -45,12 +47,13 @@ public class LogIn extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void onClick(View v) {
-
                 user_pass = myDb.getAllData(username.getText().toString());
                 check_pass = password.getText().toString();
                 if(user_pass.equals(check_pass))
                 {
                     showMessage("Attention","Password is correct");
+                    Intent intent = new Intent(LogIn.this, home.class);
+                    startActivity(intent);
                 }
                 else
                 {
