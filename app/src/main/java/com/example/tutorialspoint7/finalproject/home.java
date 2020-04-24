@@ -54,6 +54,7 @@ public class home extends AppCompatActivity {
                             //clouds = response.getJSONObject("Ratings").getString("Source");
                             city = response.getString("Title");
                             poster = response.getString("Poster");
+                            //Picasso allows for hassle-free image loading in your application—often in one line of code!
                             Picasso.get().load(poster).into(imageView);
 
                         } catch (JSONException e) {
