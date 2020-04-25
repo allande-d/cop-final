@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.tutorialspoint7.finalproject.RegisterPage;
 import com.example.tutorialspoint7.finalproject.ui.login.LogIn;
 import com.squareup.picasso.Picasso;
 
@@ -27,10 +29,14 @@ public class home extends AppCompatActivity {
     TextView mTextViewResult;
     ImageView imageView;
     EditText movie_title;
+    String username;
+    Integer count =0;
     EditText movie_year;
     String hold_title;
     String hold_year;
     Button getMovie;
+    ImageButton addFavorite;
+    DatabaseHelper myDb;
     String movieid;
     private RequestQueue mQueue;
     @Override
@@ -40,11 +46,15 @@ public class home extends AppCompatActivity {
         imageView = findViewById(R.id.imageView2);
         mTextViewResult = findViewById(R.id.textView5);
         movie_title = findViewById(R.id.name);
+        Intent i =getIntent();
+        username = i.getStringExtra("user_name");
+        addFavorite = findViewById(R.id.imageButton);
         movie_year = findViewById(R.id.editText);
         getMovie = findViewById(R.id.button3);
         mQueue = Volley.newRequestQueue(this);
-
-
+        //Get users email from the LogIn.java class
+        myDb = new DatabaseHelper(this);
+        myDb.initializeCount(username);
         getMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -53,7 +63,6 @@ public class home extends AppCompatActivity {
                 jsonParse();
             }
         });
-
     }
     //http://www.omdbapi.com/?t=galaxy&apikey=fe4f1194
     private void jsonParse() { String url = "https://www.omdbapi.com/?t=" + hold_title + "&y=" + hold_year + "&apikey=fe4f1194";
@@ -82,7 +91,17 @@ public class home extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        mTextViewResult.setText("Movie Titlwe: " + movie_tit);
+                        mTextViewResult.setText("Movie Title: " + movie_tit);
+                        addFavorite.setVisibility(View.VISIBLE);
+                        addFavorite.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                myDb.insertMovieId(movieid,username,myDb.getCount(username));
+                                myDb.incrementCount(count,username);
+                                count=count++;
+                            }
+                        });
+                        //Put MovieID into DB
                     }
                 }, new Response.ErrorListener() {
             @Override

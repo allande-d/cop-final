@@ -58,10 +58,11 @@
 
     <ImageButton
         android:id="@+id/imageButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginStart="328dp"
         android:layout_marginLeft="328dp"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/imageView2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

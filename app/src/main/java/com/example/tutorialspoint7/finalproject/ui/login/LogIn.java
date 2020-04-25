@@ -1,5 +1,6 @@
 package com.example.tutorialspoint7.finalproject.ui.login;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
@@ -25,6 +26,7 @@ public class LogIn extends AppCompatActivity {
     EditText username;
     EditText password;
     DatabaseHelper myDb;
+    public String user_email;
     String check_pass;
     String user_pass = "";
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +51,13 @@ public class LogIn extends AppCompatActivity {
             public void onClick(View v) {
                 user_pass = myDb.getAllData(username.getText().toString());
                 check_pass = password.getText().toString();
+                user_email = username.getText().toString();
                 if(user_pass.equals(check_pass))
                 {
                     showMessage("Attention","Password is correct");
                     Intent intent = new Intent(LogIn.this, home.class);
+                    //Intent to pass user's email to home class
+                    intent.putExtra("user_name",user_email);
                     startActivity(intent);
                 }
                 else
