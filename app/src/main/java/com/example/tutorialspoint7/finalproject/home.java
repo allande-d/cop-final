@@ -2,6 +2,7 @@ package com.example.tutorialspoint7.finalproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -30,7 +32,7 @@ public class home extends AppCompatActivity {
     ImageView imageView;
     EditText movie_title;
     String username;
-    Integer count =0;
+    Integer count=0;
     EditText movie_year;
     String hold_title;
     String hold_year;
@@ -54,12 +56,13 @@ public class home extends AppCompatActivity {
         mQueue = Volley.newRequestQueue(this);
         //Get users email from the LogIn.java class
         myDb = new DatabaseHelper(this);
-        myDb.initializeCount(username);
+        //myDb.initializeCount(username);
         getMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 hold_title = movie_title.getText().toString();
                 hold_year = movie_year.getText().toString();
+                count = myDb.getCount(username);
                 jsonParse();
             }
         });
@@ -88,6 +91,7 @@ public class home extends AppCompatActivity {
                             //Picasso allows for hassle-free image loading in your application—often in one line of code!
                             Picasso.get().load(poster).into(imageView);
 
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -96,9 +100,18 @@ public class home extends AppCompatActivity {
                         addFavorite.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                myDb.insertMovieId(movieid,username,myDb.getCount(username));
-                                myDb.incrementCount(count,username);
-                                count=count++;
+                                if(count <= 3){
+                                    myDb.insertMovieId(movieid,username,count);
+                                    count=count+1;
+                                    myDb.incrementCount(count,username);
+                                }
+                                else{
+                                    Context context = getApplicationContext();
+                                    CharSequence text = "Can not add to favorites. Please delete one to add another movie as a favorite.";
+                                    int duration = Toast.LENGTH_SHORT;
+                                    Toast toast = Toast.makeText(context, text, duration);
+                                    toast.show();
+                                }
                             }
                         });
                         //Put MovieID into DB

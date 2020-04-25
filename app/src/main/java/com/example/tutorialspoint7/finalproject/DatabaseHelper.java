@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -44,11 +45,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_2,name);
         contentValues.put(COL_3,username);
         contentValues.put(COL_4,password);
+        contentValues.put(COL_9,0);
         long result = db.insert(TABLE_NAME,null ,contentValues);
         if(result == -1)
             return false;
         else
             return true;
+    }
+
+
+    public void insertMovieId(String movie_id, String user, Integer count) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        //db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_5 + " =?" + movie_id + " WHERE " + COL_3 + "=?", new String[]{user});
+        if(count==0)
+        {
+            ContentValues newValues = new ContentValues();
+            newValues.put(COL_5, movie_id);
+            db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
+        }
+        if(count==1)
+        {
+            ContentValues newValues = new ContentValues();
+            newValues.put(COL_6, movie_id);
+            db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
+        }
+        if(count==2)
+        {
+            ContentValues newValues = new ContentValues();
+            newValues.put(COL_7, movie_id);
+            db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
+        }
+        if(count==3)
+        {
+            ContentValues newValues = new ContentValues();
+            newValues.put(COL_8, movie_id);
+            db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
+        }
     }
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public String getAllData(String check_user) {
@@ -58,51 +90,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         res.moveToFirst();
         return res.getString(3);
     }
-
-    public void insertMovieId(String movie_id, String user, Integer count) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        //db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_5 + " =?" + movie_id + " WHERE " + COL_3 + "=?", new String[]{user});
-        ContentValues newValues = new ContentValues();
-        if(count==0)
-        {
-            newValues.put(COL_5, movie_id);
-            db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
-        }
-        if(count==1)
-        {
-            newValues.put(COL_6, movie_id);
-            db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
-        }
-        if(count==2)
-        {
-            newValues.put(COL_7, movie_id);
-            db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
-        }
-        if(count==3)
-        {
-            newValues.put(COL_8, movie_id);
-            db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
-        }
-    }
     public Integer getCount(String user){
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select COUNT from "+ TABLE_NAME + " WHERE " + COL_3+ " =?", new String[]{user});
+        Cursor res = db.rawQuery("select * from "+ TABLE_NAME + " WHERE " + COL_3+ " =?", new String[]{user});
         //Cursor res = db.rawQuery("select * from "+ TABLE_NAME + " WHERE " + COL_3+ " =?", new String[]{check_user} ,null);
         res.moveToFirst();
         return res.getInt(8);
-    }
-    public void initializeCount(String user) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        //db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_5 + " =?" + movie_id + " WHERE " + COL_3 + "=?", new String[]{user});
-        ContentValues newValues = new ContentValues();
-        newValues.put(COL_9, 0);
-        db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
     }
     public void incrementCount(Integer count, String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues newValues = new ContentValues();
         newValues.put(COL_9, count);
-        db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_9), new String[]{user});
+        db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
         }
-
 }
