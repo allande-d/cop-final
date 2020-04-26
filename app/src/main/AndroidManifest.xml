@@ -17,7 +17,10 @@
             android:label="@string/title_activity_login" />
         <activity android:name=".RegisterPage" />
         <activity android:name=".ui.login.LogIn" />
+        <activity android:name=".favorites" />
+
         <activity android:name=".MainActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

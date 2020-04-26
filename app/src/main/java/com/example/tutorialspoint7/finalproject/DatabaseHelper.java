@@ -21,6 +21,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_7 = "MOVIEID3";
     public static final String COL_8 = "MOVIEID4";
     public static final String COL_9 = "COUNT";
+    public static  String hold_id = "";
+    public static Integer hold_count = 0;
+
 
 
     public DatabaseHelper(Context context) {
@@ -45,6 +48,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_2,name);
         contentValues.put(COL_3,username);
         contentValues.put(COL_4,password);
+        contentValues.put(COL_5,"");
+        contentValues.put(COL_6,"");
+        contentValues.put(COL_7,"");
+        contentValues.put(COL_8,"");
         contentValues.put(COL_9,0);
         long result = db.insert(TABLE_NAME,null ,contentValues);
         if(result == -1)
@@ -103,4 +110,57 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         newValues.put(COL_9, count);
         db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
         }
+    public String getID(String user, Integer column){
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = db.rawQuery("select * from "+ TABLE_NAME + " WHERE " + COL_3+ " =?", new String[]{user});
+        //Cursor res = db.rawQuery("select * from "+ TABLE_NAME + " WHERE " + COL_3+ " =?", new String[]{check_user} ,null);
+        res.moveToFirst();
+        return res.getString(column);
+    }
+    public void deleteMovie(String user, Integer column){
+        hold_count = getCount(user);
+        if(column == 1) {
+            //COL_5
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues newValues = new ContentValues();
+            newValues.put(COL_5, getID(user,7));
+            db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
+            decrementCount(getCount(user),user);
+        }
+        if(column == 2) {
+            //COL_6
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues newValues = new ContentValues();
+            newValues.put(COL_6, getID(user,7));
+            db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
+            decrementCount(getCount(user),user);
+        }
+        if(column == 3) {
+            //COL_7
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues newValues = new ContentValues();
+            newValues.put(COL_7, getID(user,7));
+            db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
+            decrementCount(getCount(user),user);
+        }
+        if(column == 4) {
+            //COL_8
+            SQLiteDatabase db = this.getWritableDatabase();
+            ContentValues newValues = new ContentValues();
+            newValues.put(COL_8, "");
+            db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
+            decrementCount(getCount(user),user);
+        }
+        //Gets passed column of movie being deleted
+        //Checks position of the column being deleted if its movie1,movie2.....
+        //Makes the value of the column being deleted equal to null
+        // Moves every movie ID to the right of it to the left
+
+    }
+    public void decrementCount(Integer count, String user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues newValues = new ContentValues();
+        newValues.put(COL_9, count-1);
+        db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
+    }
 }

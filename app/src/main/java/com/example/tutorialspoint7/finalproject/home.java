@@ -19,7 +19,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.tutorialspoint7.finalproject.RegisterPage;
 import com.example.tutorialspoint7.finalproject.ui.login.LogIn;
 import com.squareup.picasso.Picasso;
 
@@ -37,6 +36,7 @@ public class home extends AppCompatActivity {
     String hold_title;
     String hold_year;
     Button getMovie;
+    Button button3;
     ImageButton addFavorite;
     DatabaseHelper myDb;
     String movieid;
@@ -48,6 +48,7 @@ public class home extends AppCompatActivity {
         imageView = findViewById(R.id.imageView2);
         mTextViewResult = findViewById(R.id.textView5);
         movie_title = findViewById(R.id.name);
+        button3 = findViewById(R.id.button4);
         Intent i =getIntent();
         username = i.getStringExtra("user_name");
         addFavorite = findViewById(R.id.imageButton);
@@ -66,9 +67,18 @@ public class home extends AppCompatActivity {
                 jsonParse();
             }
         });
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(home.this, favorites.class);
+                intent.putExtra("username",username);
+                startActivity(intent);
+            }
+        });
     }
     //http://www.omdbapi.com/?t=galaxy&apikey=fe4f1194
-    private void jsonParse() { String url = "https://www.omdbapi.com/?t=" + hold_title + "&y=" + hold_year + "&apikey=fe4f1194";
+    private void jsonParse() {
+        String url = "https://www.omdbapi.com/?t=" + hold_title + "&y=" + hold_year + "&apikey=fe4f1194";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
