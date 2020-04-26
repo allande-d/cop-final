@@ -18,7 +18,7 @@
         android:layout_alignBottom="@id/imageView"
         android:layout_marginStart="153dp"
         android:layout_marginLeft="153dp"
-        android:layout_marginTop="192dp"
+        android:layout_marginTop="188dp"
         android:gravity="center"
         android:text="iMovie"
         android:textColor="#FFFFFF"
