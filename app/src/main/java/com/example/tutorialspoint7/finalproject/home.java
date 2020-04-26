@@ -110,6 +110,7 @@ public class home extends AppCompatActivity {
                         addFavorite.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                count = myDb.getCount(username);
                                 if(count <= 3){
                                     myDb.insertMovieId(movieid,username,count);
                                     count=count+1;

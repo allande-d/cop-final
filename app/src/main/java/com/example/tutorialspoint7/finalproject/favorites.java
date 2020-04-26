@@ -126,7 +126,7 @@ public class favorites extends AppCompatActivity {
                             e.printStackTrace();
                         }
                         if(view_number == 1) {
-                            mTextViewResult1.setText("Movie Title: " + movie_tit);
+                            mTextViewResult1.setText("" + movie_tit);
                             delete1.setVisibility(View.VISIBLE);
                             delete1.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -139,7 +139,7 @@ public class favorites extends AppCompatActivity {
                             });
                         }
                         if(view_number == 2) {
-                            mTextViewResult2.setText("Movie Title: " + movie_tit);
+                            mTextViewResult2.setText("" + movie_tit);
                             delete2.setVisibility(View.VISIBLE);
                             delete2.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -152,7 +152,7 @@ public class favorites extends AppCompatActivity {
                             });
                         }
                         if(view_number == 3) {
-                            mTextViewResult3.setText("Movie Title: " + movie_tit);
+                            mTextViewResult3.setText("" + movie_tit);
                             delete3.setVisibility(View.VISIBLE);
                             delete3.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -165,7 +165,7 @@ public class favorites extends AppCompatActivity {
                             });
                         }
                         if(view_number == 4) {
-                            mTextViewResult4.setText("Movie Title: " + movie_tit);
+                            mTextViewResult4.setText("" + movie_tit);
                             delete4.setVisibility(View.VISIBLE);
                             delete4.setOnClickListener(new View.OnClickListener() {
                                 @Override
