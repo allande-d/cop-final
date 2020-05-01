@@ -27,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class home extends AppCompatActivity {
+    //Initializing my variables
     TextView mTextViewResult;
     ImageView imageView;
     EditText movie_title;
@@ -45,6 +46,7 @@ public class home extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        //Pointing my variables to the correct item in the activity
         imageView = findViewById(R.id.imageView2);
         mTextViewResult = findViewById(R.id.textView5);
         movie_title = findViewById(R.id.name);
@@ -61,12 +63,16 @@ public class home extends AppCompatActivity {
         getMovie.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //User input movie title
                 hold_title = movie_title.getText().toString();
+                //User input movie year
                 hold_year = movie_year.getText().toString();
+                //Check DB for movie count
                 count = myDb.getCount(username);
                 jsonParse();
             }
         });
+        //Once button 3 is press user is sent to their favorites page
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,36 +90,34 @@ public class home extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        JSONArray weather = null;
                         String movie_tit = null;
                         String poster = null;
 
                         try {
-                           // weather = response.getJSONArray("Ratings");
-                           // for (int i = 0; i < weather.length(); i++)
-                          //  {
-                          //      hold = weather.getJSONObject(i).getString("Source");
-                          // }
-                            //clouds = response.getJSONObject("Ratings").getString("Source");
+                            //Get input from the JSON returned by the URL
                             movie_tit = response.getString("Title");
                             poster = response.getString("Poster");
                             movieid = response.getString("imdbID");
-                            //Picasso allows for hassle-free image loading in your application—often in one line of code!
+                            //Picasso allows for hassle-free image loading
                             Picasso.get().load(poster).into(imageView);
 
 
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        //Display the movie title for the user obtained from the API/JSON
                         mTextViewResult.setText("Movie Title: " + movie_tit);
                         addFavorite.setVisibility(View.VISIBLE);
                         addFavorite.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                //Obtain count before a user adds a MOVIEID into the DB
                                 count = myDb.getCount(username);
                                 if(count <= 3){
+                                    //Calls the insertMovieID function to place the current movies ID into a free MOVIEID column
                                     myDb.insertMovieId(movieid,username,count);
                                     count=count+1;
+                                    //Increment count column on DB
                                     myDb.incrementCount(count,username);
                                 }
                                 else{

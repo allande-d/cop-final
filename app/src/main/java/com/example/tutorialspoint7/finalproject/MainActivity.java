@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Button to send users to the login screen
         ChangeScreen = findViewById(R.id.button2);
         ChangeScreen.setOnClickListener(new View.OnClickListener() {
             @Override

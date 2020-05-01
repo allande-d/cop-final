@@ -21,6 +21,7 @@ import com.example.tutorialspoint7.finalproject.RegisterPage;
 import com.example.tutorialspoint7.finalproject.home;
 
 public class LogIn extends AppCompatActivity {
+    //Initializing variables
     Button login;
     Button signup;
     EditText username;
@@ -31,13 +32,15 @@ public class LogIn extends AppCompatActivity {
     String user_pass = "";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Create a new DatabaseHelper instance
         myDb = new DatabaseHelper(this);
         setContentView(R.layout.activity_login);
+        //Connecting variables to activity
         username = findViewById(R.id.username);
         login = findViewById(R.id.login);
         signup = findViewById(R.id.signup);
         password = findViewById(R.id.password);
-
+        //Send user to the signup activity when the SIGNUP button is pressed
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -45,6 +48,8 @@ public class LogIn extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        //Check users credentials and send them to the
+        //home page if their login information match whats on the DB
         login.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
@@ -52,6 +57,7 @@ public class LogIn extends AppCompatActivity {
                 user_pass = myDb.getAllData(username.getText().toString());
                 check_pass = password.getText().toString();
                 user_email = username.getText().toString();
+                //Check users inputted username with what is on DB for that username
                 if(user_pass.equals(check_pass))
                 {
                     showMessage("Attention","Password is correct");

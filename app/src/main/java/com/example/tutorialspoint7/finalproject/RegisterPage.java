@@ -19,18 +19,22 @@ public class RegisterPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        //Connect variables to items in activity
         name = findViewById(R.id.name);
         username = findViewById(R.id.username);
         password = findViewById(R.id.password);
         register = findViewById(R.id.register);
+        //Create a new DatabaseHelper instance
         myDb = new DatabaseHelper(this);
         AddData();
     }
     public  void AddData() {
+        //Function to add information into DB
         register.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        //InsertData function returns true if information is added correctly
                         boolean isInserted = myDb.insertData(name.getText().toString(), username.getText().toString(), password.getText().toString() );
                         if(isInserted == true){
                             Toast.makeText(RegisterPage.this,"Account Created",Toast.LENGTH_LONG).show();

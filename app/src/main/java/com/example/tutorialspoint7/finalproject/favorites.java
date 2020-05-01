@@ -45,7 +45,9 @@ public class favorites extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Create DB instance
         myDb = new DatabaseHelper(this);
+        //Connect variables to value in activity
         setContentView(R.layout.activity_favorites);
         mTextViewResult1 = findViewById(R.id.textView8);
         mTextViewResult2 = findViewById(R.id.textView9);
@@ -64,6 +66,7 @@ public class favorites extends AppCompatActivity {
         //Get username from the home.java class
         Intent i = getIntent();
         username = i.getStringExtra("username");
+        //Test if the user can add one more movie
         movie_count=myDb.getCount(username);
         for(int j = 0; j <= movie_count; j++) {
             if(j == 1){
@@ -92,22 +95,16 @@ public class favorites extends AppCompatActivity {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        JSONArray weather = null;
                         String movie_tit = null;
                         String poster = null;
 
                         try {
-                            // weather = response.getJSONArray("Ratings");
-                            // for (int i = 0; i < weather.length(); i++)
-                            //  {
-                            //      hold = weather.getJSONObject(i).getString("Source");
-                            // }
-                            //clouds = response.getJSONObject("Ratings").getString("Source");
                             movie_tit = response.getString("Title");
                             poster = response.getString("Poster");
                             if(view_number == 1) {
-                                //Picasso allows for hassle-free image loading in your application—often in one line of code!
+                                //Picasso allows for hassle-free image loading
                                 Picasso.get().load(poster).into(imageView1);
+                                //Set imageView visibility to VISIBLE because it is hidden by default
                                 imageView1.setVisibility(View.VISIBLE);
                             }
                             if(view_number == 2) {
@@ -125,19 +122,24 @@ public class favorites extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+                        //Controller for the movie being shown in the favorites page
                         if(view_number == 1) {
                             mTextViewResult1.setText("" + movie_tit);
+                            //OnclickListener for a movie. Once click visibility is set to hidden
                             delete1.setVisibility(View.VISIBLE);
                             delete1.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    //TextView is set to null once movie is deleted
                                     mTextViewResult1.setText("");
                                     delete1.setVisibility(View.INVISIBLE);
                                     imageView1.setVisibility(View.INVISIBLE);
+                                    //deleteMovie function is called and a movie is erased
                                     myDb.deleteMovie(username,1);
                                 }
                             });
                         }
+                        //Controller for the movie being shown in the favorites page
                         if(view_number == 2) {
                             mTextViewResult2.setText("" + movie_tit);
                             delete2.setVisibility(View.VISIBLE);
@@ -151,6 +153,7 @@ public class favorites extends AppCompatActivity {
                                 }
                             });
                         }
+                        //Controller for the movie being shown in the favorites page
                         if(view_number == 3) {
                             mTextViewResult3.setText("" + movie_tit);
                             delete3.setVisibility(View.VISIBLE);
@@ -164,6 +167,7 @@ public class favorites extends AppCompatActivity {
                                 }
                             });
                         }
+                        //Controller for the movie being shown in the favorites page
                         if(view_number == 4) {
                             mTextViewResult4.setText("" + movie_tit);
                             delete4.setVisibility(View.VISIBLE);

@@ -9,7 +9,7 @@ import android.os.Build;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
-
+//Declaring variables for this class
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "Users.db";
     public static final String TABLE_NAME = "accounts_table";
@@ -31,6 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
+    //Once called this function initailizes the DB with its columns
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_NAME +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME TEXT,EMAIL TEXT,PASSWORD TEXT,MOVIEID1 TEXT," +
                 "MOVIEID2 TEXT,MOVIEID3 TEXT,MOVIEID4 TEXT,COUNT INTEGER)");
@@ -41,7 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME);
         onCreate(db);
     }
-
+//Function used to insert into DB. Takes a name, email and password from EDITTEXT string
     public boolean insertData(String name,String username,String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -60,28 +61,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             return true;
     }
 
-
+//Called to put a movieID into one of the columns depending on count
     public void insertMovieId(String movie_id, String user, Integer count) {
         SQLiteDatabase db = this.getWritableDatabase();
-        //db.execSQL("UPDATE " + TABLE_NAME + " SET " + COL_5 + " =?" + movie_id + " WHERE " + COL_3 + "=?", new String[]{user});
+        //If count is zero the MOVIEID is added to the column MOVIEID1
         if(count==0)
         {
             ContentValues newValues = new ContentValues();
             newValues.put(COL_5, movie_id);
+            //Update query
             db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
         }
+        //If count is zero the MOVIEID is added to the column MOVIEID2
         if(count==1)
         {
             ContentValues newValues = new ContentValues();
             newValues.put(COL_6, movie_id);
             db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
         }
+        //If count is zero the MOVIEID is added to the column MOVIEID3
         if(count==2)
         {
             ContentValues newValues = new ContentValues();
             newValues.put(COL_7, movie_id);
             db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
         }
+        //If count is zero the MOVIEID is added to the column MOVIEID4
         if(count==3)
         {
             ContentValues newValues = new ContentValues();
@@ -97,6 +102,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         res.moveToFirst();
         return res.getString(3);
     }
+    //Function returns an integer with the count value for the provided email
     public Integer getCount(String user){
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from "+ TABLE_NAME + " WHERE " + COL_3+ " =?", new String[]{user});
@@ -104,13 +110,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         res.moveToFirst();
         return res.getInt(8);
     }
+    //Increments count value for the user
     public void incrementCount(Integer count, String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues newValues = new ContentValues();
         newValues.put(COL_9, count);
         db.update(TABLE_NAME, newValues, String.format("%s = ?", COL_3), new String[]{user});
         }
+        //Function returns a string containing the MOVIEID for the user
     public String getID(String user, Integer column){
+        //Select query
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = db.rawQuery("select * from "+ TABLE_NAME + " WHERE " + COL_3+ " =?", new String[]{user});
         //Cursor res = db.rawQuery("select * from "+ TABLE_NAME + " WHERE " + COL_3+ " =?", new String[]{check_user} ,null);
@@ -120,7 +129,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteMovie(String user, Integer column){
         hold_count = getCount(user);
         if(column == 1) {
-            //COL_5
+            //COL_5 - Delete version if the first movie is the one the user wants to delete
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues newValues = new ContentValues();
             newValues.put(COL_5, getID(user,7));
@@ -128,7 +137,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             decrementCount(getCount(user),user);
         }
         if(column == 2) {
-            //COL_6
+            //COL_6 - Delete version if the second movie is the one the user wants to delete
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues newValues = new ContentValues();
             newValues.put(COL_6, getID(user,7));
@@ -136,7 +145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             decrementCount(getCount(user),user);
         }
         if(column == 3) {
-            //COL_7
+            //COL_7 - Delete version if the third movie is the one the user wants to delete
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues newValues = new ContentValues();
             newValues.put(COL_7, getID(user,7));
@@ -144,7 +153,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             decrementCount(getCount(user),user);
         }
         if(column == 4) {
-            //COL_8
+            //COL_8 - Delete version if the fourth movie is the one the user wants to delete
             SQLiteDatabase db = this.getWritableDatabase();
             ContentValues newValues = new ContentValues();
             newValues.put(COL_8, "");
@@ -157,6 +166,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Moves every movie ID to the right of it to the left
 
     }
+    //Function to decrement the count value. Takes a count number and a email
     public void decrementCount(Integer count, String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues newValues = new ContentValues();
